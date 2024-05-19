@@ -8,6 +8,7 @@ import home.manager.api.repository.UserRepository;
 import home.manager.api.service.authentication.TokenService;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,34 +21,42 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/login")
+@Log4j2
 public class AutenticacaoController {
-
     @Autowired
     private AuthenticationManager manager;
-
     @Autowired
     private TokenService tokenService;
     @Autowired
     private SecurityConfigurations security;
-
     @Autowired
     private UserRepository repository;
 
     @PostMapping("/create")
     public ResponseEntity criarUsuario(@RequestBody @Valid UserRequest dados, UriComponentsBuilder uriBuilder){
-        var user = new User(dados.login(), security.passwordEncoder().encode(dados.password()));
-        repository.save(user);
-        var uri = uriBuilder.path("/user/{id}").buildAndExpand(user).toUri();
-        return ResponseEntity.created(uri).body("usuario criado");
+        log.info("Criando usuário");
+        try{
+            var user = new User(dados.nome(), dados.idade(),dados.login(), security.passwordEncoder().encode(dados.password()));
+            repository.save(user);
+            var uri = uriBuilder.path("/user/{id}").buildAndExpand(user).toUri();
+            return ResponseEntity.created(uri).body("usuario criado");
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ResponseEntity.internalServerError().body("Erro ao criar usuário");
+        }
     }
 
-    @PostMapping
+    @PostMapping()
     public ResponseEntity efetuarLogin(@RequestBody @Valid UserRequest dados) {
-        var authenticationToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.password());
-        var authentication = manager.authenticate(authenticationToken);
-
-        var tokenJWT = tokenService.generateToken((User) authentication.getPrincipal());
-
-        return ResponseEntity.ok(new UserResponse(tokenJWT));
+        log.info("efetuando login");
+        try{
+            var authenticationToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.password());
+            var authentication = manager.authenticate(authenticationToken);
+            var tokenJWT = tokenService.generateToken((User) authentication.getPrincipal());
+            return ResponseEntity.ok(new UserResponse(tokenJWT));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ResponseEntity.internalServerError().body("Erro ao fazer login");
+        }
     }
 }

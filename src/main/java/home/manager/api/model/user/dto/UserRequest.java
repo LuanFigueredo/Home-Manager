@@ -1,4 +1,4 @@
 package home.manager.api.model.user.dto;
 
-public record UserRequest(String login, String password) {
+public record UserRequest(String nome, int idade,String login, String password) {
 }
