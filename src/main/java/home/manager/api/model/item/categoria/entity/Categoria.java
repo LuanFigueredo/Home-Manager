@@ -1,6 +1,6 @@
 package home.manager.api.model.item.categoria.entity;
 
-import home.manager.api.model.item.costant.Grupo;
+import home.manager.api.model.costant.Grupo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

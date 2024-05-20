@@ -29,6 +29,8 @@ public class SecurityConfigurations {
                     req.requestMatchers("/login/create").permitAll();
                     req.requestMatchers("/marca").permitAll();
                     req.requestMatchers("/marca/*").permitAll();
+                    req.requestMatchers("/categoria").permitAll();
+                    req.requestMatchers("/categoria/*").permitAll();
                     req.anyRequest().authenticated();
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
