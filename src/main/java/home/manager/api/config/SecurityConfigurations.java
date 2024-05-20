@@ -31,6 +31,8 @@ public class SecurityConfigurations {
                     req.requestMatchers("/marca/*").permitAll();
                     req.requestMatchers("/categoria").permitAll();
                     req.requestMatchers("/categoria/*").permitAll();
+                    req.requestMatchers("/patrimonio").permitAll();
+                    req.requestMatchers("/patrimonio/*").permitAll();
                     req.anyRequest().authenticated();
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
