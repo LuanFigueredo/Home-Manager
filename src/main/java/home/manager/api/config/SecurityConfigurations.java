@@ -27,6 +27,8 @@ public class SecurityConfigurations {
                 .authorizeHttpRequests(req ->{
                     req.requestMatchers("/login").permitAll();
                     req.requestMatchers("/login/create").permitAll();
+                    req.requestMatchers("/marca").permitAll();
+                    req.requestMatchers("/marca/*").permitAll();
                     req.anyRequest().authenticated();
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
