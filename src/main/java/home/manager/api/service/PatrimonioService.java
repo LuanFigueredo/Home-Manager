@@ -28,6 +28,10 @@ public class PatrimonioService {
         return optionalPatrimonio.orElse(null);
     }
 
+    public List<Patrimonio> buscarPatrimonioPorNome(String nome) {
+        return patrimonioRepository.findByNomeContainingIgnoreCase(nome);
+    }
+
     public Patrimonio atualizarPatrimonio(Long id, Patrimonio patrimonioAtualizado) {
         Patrimonio patrimonioExistente = buscarPatrimonioPorId(id);
         if (patrimonioExistente != null) {

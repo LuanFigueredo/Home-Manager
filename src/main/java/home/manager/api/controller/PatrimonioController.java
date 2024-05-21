@@ -31,6 +31,11 @@ public class PatrimonioController {
         return new ResponseEntity<>(patrimonios, HttpStatus.OK);
     }
 
+    @GetMapping("/buscar")
+    public List<Patrimonio> buscarPorNome(@RequestParam String nome) {
+        return patrimonioService.buscarPatrimonioPorNome(nome);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Patrimonio> buscarPatrimonioPorId(@PathVariable Long id) {
         Patrimonio patrimonio = patrimonioService.buscarPatrimonioPorId(id);
@@ -43,7 +48,6 @@ public class PatrimonioController {
         return new ResponseEntity<>(patrimonio, HttpStatus.OK);
     }
 
-    // Endpoint para excluir um patrimônio
     @DeleteMapping("/{id}")
     public ResponseEntity<?> excluirPatrimonio(@PathVariable Long id) {
         patrimonioService.excluirPatrimonio(id);
